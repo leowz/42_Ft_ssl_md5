@@ -1,20 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ssl.h                                           :+:      :+:    :+:   */
+/*   md5_functions.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zweng <zweng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/03/25 17:29:17 by zweng             #+#    #+#             */
-/*   Updated: 2019/04/03 17:23:03 by zweng            ###   ########.fr       */
+/*   Created: 2019/04/05 11:43:35 by zweng             #+#    #+#             */
+/*   Updated: 2019/04/05 12:18:28 by zweng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_SSH_H
-# define FT_SSH_H
+#include "md5.h"
 
-# include "libft.h"
-# include "ft_printf.h"
-# include "md5.h"
+UINT4	f(UINT4 x, UINT4 y, UINT4 z)
+{
+	return ((x & y) | ((~x) & z));
+}
 
-#endif
+UINT4	g(UINT4 x, UINT4 y, UINT4 z)
+{
+	return ((x & y) | (x & (~z)));
+}
+
+UINT4	h(UINT4 x, UINT4 y, UINT4 z)
+{
+	return (x ^ y ^ z);
+}
+
+UINT4	i(UINT4 x, UINT4 y, UINT4 z)
+{
+	return ((x ^ y) | (~z));
+}
+
+UINT4	rotate_left(UINT4 x, int n)
+{
+	return ((x << n) | (x >> (32 - n)));
+}

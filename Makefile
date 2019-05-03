@@ -6,7 +6,7 @@
 #    By: zweng <zweng@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/25 17:24:40 by zweng             #+#    #+#              #
-#    Updated: 2019/03/25 18:19:26 by zweng            ###   ########.fr        #
+#    Updated: 2019/04/05 15:45:06 by zweng            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ HEADERSP 		= -I$(HEADER_PATH) -I$(LIBFT_PATH)/$(HEADER_PATH)
 LIBSP 			= -L$(LIBFT_PATH)
 LIBS 			= -lft #-fsanitize=address
 
-SRC_NAME		= main.c
+SRC_NAME		= main.c md5.c mddriver.c md5_functions.c md5_functions2.c
 
 OBJ_PATH 		= obj
 OBJ_NAME 		= $(SRC_NAME:.c=.o)

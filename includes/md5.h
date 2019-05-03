@@ -6,12 +6,14 @@
 /*   By: zweng <zweng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 11:39:20 by zweng             #+#    #+#             */
-/*   Updated: 2019/03/26 12:24:08 by zweng            ###   ########.fr       */
+/*   Updated: 2019/04/11 17:29:49 by zweng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MD5_H
 # define MD5_H
+
+# include <stdio.h>
 
 # define S11 7
 # define S12 12
@@ -39,4 +41,19 @@ typedef struct {
   unsigned char				buffer[64];
 } MD5_CTX;
 
+void						md5(int argc, char **argv);
+void						MD5Init(MD5_CTX *);
+void						MD5Update(MD5_CTX *,
+		unsigned char *, unsigned int);
+void						MD5Final(unsigned char [16], MD5_CTX *);
+
+UINT4						f(UINT4 x, UINT4 y, UINT4 z);
+UINT4						g(UINT4 x, UINT4 y, UINT4 z);
+UINT4						h(UINT4 x, UINT4 y, UINT4 z);
+UINT4						i(UINT4 x, UINT4 y, UINT4 z);
+UINT4						rotate_left(UINT4 x, int n);
+void						ff(UINT4 *abcd, UINT4 x, int s, UINT4 ac);
+void						gg(UINT4 *abcd, UINT4 x, int s, UINT4 ac);
+void						hh(UINT4 *abcd, UINT4 x, int s, UINT4 ac);
+void						ii(UINT4 *abcd, UINT4 x, int s, UINT4 ac);
 #endif

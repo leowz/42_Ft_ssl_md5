@@ -6,7 +6,7 @@
 /*   By: zweng <zweng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/25 17:28:19 by zweng             #+#    #+#             */
-/*   Updated: 2019/03/26 11:35:31 by zweng            ###   ########.fr       */
+/*   Updated: 2019/04/03 11:58:21 by zweng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int			main(int ac, char **av)
 	if (ac > 1)
 	{
 		if (ft_strcmp(av[1], "md5") == 0)
-			;
+			md5(ac, av);
 		else if (ft_strcmp(av[1], "sha256") == 0)
 			;
 		else
