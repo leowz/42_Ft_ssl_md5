@@ -6,7 +6,7 @@
 /*   By: zweng <zweng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 11:39:20 by zweng             #+#    #+#             */
-/*   Updated: 2019/04/11 17:29:49 by zweng            ###   ########.fr       */
+/*   Updated: 2019/05/15 17:18:17 by zweng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 
 typedef unsigned char		*POINTER;
 typedef unsigned short int	UINT2;
-typedef unsigned long int	UINT4;
+typedef unsigned int	UINT4;
 typedef struct {
   UINT4						count[2];
   UINT4						state[4];
