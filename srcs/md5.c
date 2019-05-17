@@ -88,22 +88,35 @@ unsigned int inputLen;                     /* length of input block */
 
   /* Transform as many times as possible. */
   // if inputLen < partLen then not transform
-  if (inputLen >= partLen) {
-	  //for padding index is the index after which starts padding
-	  //in other normal case index == 0
-      MD5_memcpy ((POINTER)&context->buffer[index], (POINTER)input, partLen);
-      MD5Transform (context->state, context->buffer);
+  if (inputLen > partLen) {
+	  //Looping for 64bytes block and transform until last not filled block
 
 	  //execute 64 byte block, 16-word block until remainder of mode 64 block
-     for (i = partLen; i + 63 < inputLen; i += 64)
+     for (i = 0; i + 63 < inputLen; i += 64)
        MD5Transform (context->state, &input[i]);
 
      index = 0;
   }
+  else if (inputLen == partLen) {
+	  //last transform with a last filled block with pading and length info
+
+	  //Copy length into the buffer, index is 56 since inputLen == partLen == 8
+      MD5_memcpy ((POINTER)&context->buffer[index], (POINTER)input, partLen);
+	  //last transform with the padding and length.
+      MD5Transform (context->state, context->buffer);
+	  i = partLen;
+	  index = 0; 
+  }
   else
+  {
+	  //for pading that do not need transform.
       i = 0;
+  }
 
   /* Buffer remaining input */
+  // for 1: write the rest not filled block into buffer, index == 0;
+  // for 2(last transform):  inputlen == partLen, not executed;
+  // for padding: used to copy the padding after the rest bits(not filled block)
   MD5_memcpy ((POINTER)&context->buffer[index], (POINTER)&input[i], inputLen-i);
 }
 
