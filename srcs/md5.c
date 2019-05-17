@@ -6,6 +6,8 @@ static void Decode(UINT4 *, unsigned char *, unsigned int);
 static void MD5_memcpy(POINTER, POINTER, unsigned int);
 static void MD5_memset(POINTER, int, unsigned int);
 
+// first byte Ox80 is 1000 0000; 1 is the first bit after the message
+// padding max is msg / 64 = 56, so max padding is 56 + (64 - 56) = 64 bytes
 static unsigned char PADDING[64] = {
   0x80, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -70,19 +72,29 @@ unsigned int inputLen;                     /* length of input block */
 
   /* Compute number of bytes mod 64 */
   index = (unsigned int)((context->count[0] >> 3) & 0x3F);
+  printf("index is %d\n", index);
 
   /* Update number of bits */
+  // accumulate bits number in count[0]; since inputLen is string length
+  // meaning inputlen is number of chars
   if ((context->count[0] += ((UINT4)inputLen << 3)) < ((UINT4)inputLen << 3))
       context->count[1]++;
+  // since the operation << 3 remove the top 3 bits of inputLen, here record
+  // the top 3 bits that overflows
   context->count[1] += ((UINT4)inputLen >> 29);
 
   partLen = 64 - index;
+  printf("index %d, inputLen %d, partLen %d\n", index, inputLen, partLen);
 
   /* Transform as many times as possible. */
+  // if inputLen < partLen then not transform
   if (inputLen >= partLen) {
+	  //for padding index is the index after which starts padding
+	  //in other normal case index == 0
       MD5_memcpy ((POINTER)&context->buffer[index], (POINTER)input, partLen);
       MD5Transform (context->state, context->buffer);
 
+	  //execute 64 byte block, 16-word block until remainder of mode 64 block
      for (i = partLen; i + 63 < inputLen; i += 64)
        MD5Transform (context->state, &input[i]);
 
@@ -105,15 +117,18 @@ MD5_CTX *context;                                       /* context */
   unsigned char bits[8];
   unsigned int index, padLen;
 
-  /* Save number of bits */
+  /* Save number of bits. encode 8 bytes from count[2] that has 2 UINT4 (8 bytes in total)*/
   Encode (bits, context->count, 8);
 
   /* Pad out to 56 mod 64. */
+  // bit length / 8 mode 64 
   index = (unsigned int)((context->count[0] >> 3) & 0x3f);
+  //if less than 56 ok esle 56 + 64 padding
   padLen = (index < 56) ? (56 - index) : (120 - index);
   MD5Update (context, PADDING, padLen);
 
   /* Append length (before padding) */
+  // length is 64 -56 = 8 bytes, 64 bits size; 512 - 448 = 64 bits = 8 bytes;
   MD5Update (context, bits, 8);
 
   /* Store state in digest */
@@ -213,8 +228,9 @@ unsigned char block[64];
   MD5_memset ((POINTER)x, 0, sizeof (x));
 }
 
-/* Encodes input (UINT4) into output (unsigned char). Assumes len is
+/* Encodes input (UINT4) into output (unsigned char) by 4 bytes. Assumes len is
   a multiple of 4.
+  This function transform a UINT4 into 4 unsianged char every loop.
  */
 static void Encode(unsigned char *output, UINT4 *input, unsigned int len)
 {
