@@ -6,7 +6,7 @@
 /*   By: zweng <zweng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 11:39:20 by zweng             #+#    #+#             */
-/*   Updated: 2019/05/15 17:18:17 by zweng            ###   ########.fr       */
+/*   Updated: 2019/05/22 10:30:15 by zweng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ typedef struct {
 } MD5_CTX;
 
 void						md5(int argc, char **argv);
-void						MD5Init(MD5_CTX *);
-void						MD5Update(MD5_CTX *,
-		unsigned char *, unsigned int);
-void						MD5Final(unsigned char [16], MD5_CTX *);
+void						md5_init(MD5_CTX *);
+void						md5_update(MD5_CTX *,
+							unsigned char *, unsigned int);
+void						md5_final(unsigned char [16], MD5_CTX *);
 
 UINT4						f(UINT4 x, UINT4 y, UINT4 z);
 UINT4						g(UINT4 x, UINT4 y, UINT4 z);
