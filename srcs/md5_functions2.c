@@ -6,7 +6,7 @@
 /*   By: zweng <zweng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:23:28 by zweng             #+#    #+#             */
-/*   Updated: 2019/04/05 15:04:27 by zweng            ###   ########.fr       */
+/*   Updated: 2019/05/22 12:37:14 by zweng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ static void	rotate_register(UINT4 regis[4])
 {
 	UINT4	tmp;
 
-	tmp = regis[0];
-	regis[0] = regis[1];
-	regis[1] = regis[2];
-	regis[2] = regis[3];
-	regis[3] = tmp;
+	tmp = regis[3];
+	regis[3] = regis[2];
+	regis[2] = regis[1];
+	regis[1] = regis[0];
+	regis[0] = tmp;
 }
 
 void		ff(UINT4 *abcd, UINT4 x, int s, UINT4 ac)
