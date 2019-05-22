@@ -1,10 +1,6 @@
 #include "ft_ssl.h"
 #include "md5.h"
 
-/* md5_encodes input (UINT4) into output (unsigned char) by 4 bytes. Assumes len is
-  a multiple of 4.
-  This function transform a UINT4 into 4 unsianged char every loop.
- */
 void md5_encode(unsigned char *output, UINT4 *input, unsigned int len)
 {
   unsigned int i, j;
@@ -17,9 +13,6 @@ void md5_encode(unsigned char *output, UINT4 *input, unsigned int len)
   }
 }
 
-/* md5_decodes input (unsigned char) into output (UINT4). Assumes len is
-  a multiple of 4.
- */
 void md5_decode(UINT4 *output, unsigned char *input, unsigned int len)
 {
   unsigned int i, j;
@@ -29,9 +22,6 @@ void md5_decode(UINT4 *output, unsigned char *input, unsigned int len)
               | (((UINT4)input[j+2]) << 16) | (((UINT4)input[j+3]) << 24);
 }
 
-/* Note: Replace "for loop" with standard memcpy if possible.
- */
-
 void md5_memcpy(POINTER output, POINTER input, unsigned int len)
 {
   unsigned int i;
@@ -40,8 +30,6 @@ void md5_memcpy(POINTER output, POINTER input, unsigned int len)
       output[i] = input[i];
 }
 
-/* Note: Replace "for loop" with standard memset if possible.
- */
 void md5_memset(POINTER output, int value, unsigned int len)
 {
   unsigned int i;
@@ -50,8 +38,6 @@ void md5_memset(POINTER output, int value, unsigned int len)
       ((char *)output)[i] = (char)value;
 }
 
-/* Prints a message digest in hexadecimal.
- */
 void md5_print(unsigned char digest[16])
 {
   unsigned int i;

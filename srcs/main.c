@@ -6,17 +6,11 @@
 /*   By: zweng <zweng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/25 17:28:19 by zweng             #+#    #+#             */
-/*   Updated: 2019/04/03 11:58:21 by zweng            ###   ########.fr       */
+/*   Updated: 2019/05/22 16:44:25 by zweng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ssl.h"
-
-/*void		error_log(const char *name, const char *msg)
-{
-	if (name && msg)
-		ft_dprintf(STDERR_FILENO, "ft_ssl: %s: %s\n", name, msg);
-}*/
 
 static void	command_tips(void)
 {

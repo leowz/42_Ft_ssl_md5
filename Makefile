@@ -6,7 +6,7 @@
 #    By: zweng <zweng@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/25 17:24:40 by zweng             #+#    #+#              #
-#    Updated: 2019/05/22 16:19:33 by zweng            ###   ########.fr        #
+#    Updated: 2019/05/22 16:43:49 by zweng            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ LIBFT_PATH      = libft
 
 LIB 			= libft.a
 
-HEADER 			= ft_ssl.h
+HEADER 			= $(HEADER_PATH)/ft_ssl.h $(HEADER_PATH)/md5.h
 HEADERSP 		= -I$(HEADER_PATH) -I$(LIBFT_PATH)/$(HEADER_PATH)
 LIBSP 			= -L$(LIBFT_PATH)
 LIBS 			= -lft #-fsanitize=address
@@ -55,7 +55,7 @@ $(NAME): $(LIBFT_PATH)/$(LIB) $(OBJS)
 	@$(CC) $(OBJS) $(HEADERSP) $(LIBSP) $(LIBS) -o $@
 	@printf $(GREEN)"$(NAME) Finish linking\n"$(EOC)
 
-$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(HEADER_PATH)/$(HEADER)| $(OBJ_PATH)
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.c $(HEADER)| $(OBJ_PATH)
 	@$(CC) $(CFLAGS) $(HEADERSP) -o $@ -c $<
 	@printf $(GREEN)"compiling %s\n"$(GREEN) $<
 
