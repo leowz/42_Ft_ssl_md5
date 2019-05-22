@@ -1,15 +1,5 @@
 #include "ft_ssl.h"
 
-/* Prints a message digest in hexadecimal.
- */
-static void md5_print(unsigned char digest[16])
-{
-  unsigned int i;
-
-  for (i = 0; i < 16; i++)
-    ft_printf("%02x", digest[i]);
-}
-
 /* Digests a string and prints the result.
  */
 static void md5_string (char *string)
