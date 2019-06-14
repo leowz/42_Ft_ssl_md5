@@ -6,7 +6,7 @@
 /*   By: zweng <zweng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 11:39:20 by zweng             #+#    #+#             */
-/*   Updated: 2019/05/22 16:25:14 by zweng            ###   ########.fr       */
+/*   Updated: 2019/06/14 16:18:08 by zweng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@
 # define S43 15
 # define S44 21
 
-typedef unsigned char		*POINTER;
-//typedef unsigned short int	UINT2;
+typedef unsigned char	*POINTER;
 typedef unsigned int	UINT4;
-typedef struct {
-  UINT4						count[2];
-  UINT4						state[4];
-  unsigned char				buffer[64];
-} MD5_CTX;
+typedef struct
+{
+  UINT4					count[2];
+  UINT4					state[4];
+  unsigned char			buffer[64];
+}						MD5_CTX;
 
 void						md5(int argc, char **argv);
 void						md5_init(MD5_CTX *);
