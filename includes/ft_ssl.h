@@ -16,5 +16,6 @@
 # include "libft.h"
 # include "ft_printf.h"
 # include "md5.h"
+# include "sha.h"
 
 #endif

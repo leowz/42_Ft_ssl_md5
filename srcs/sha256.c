@@ -1,4 +1,5 @@
 #include "sha.h"
+#include "md5.h"
 
 void sha256_init(SHA256_CTX *context)
 {
@@ -28,11 +29,11 @@ void sha256_update(SHA256_CTX *context, unsigned char *input, unsigned int input
 	if (inputLen >= partLen)
 	{
 	  md5_memcpy ((POINTER)&context->buffer[index], (POINTER)input, partLen);
-	  md5_transform (context->state, context->buffer);
+	  sha256_transform (context->state, context->buffer);
 	  i = partLen;
 	  while (i + 63 < inputLen)
 	  {
-		  md5_transform (context->state, &input[i]);
+		  sha256_transform (context->state, &input[i]);
 		  i += 64;
 	  }
 	 index = 0;
@@ -42,7 +43,7 @@ void sha256_update(SHA256_CTX *context, unsigned char *input, unsigned int input
 	md5_memcpy ((POINTER)&context->buffer[index], (POINTER)&input[i], inputLen-i);
 }
 
-void sha256_final(unsigned char digest[16], SHA256_CTX *context)
+void sha256_final(unsigned char digest[], SHA256_CTX *context)
 {
 	unsigned char bits[8];
 	unsigned int index, padLen;
@@ -55,8 +56,16 @@ void sha256_final(unsigned char digest[16], SHA256_CTX *context)
 	md5_encode (bits, context->count, 8);
 	index = (unsigned int)((context->count[0] >> 3) & 0x3f);
 	padLen = (index < 56) ? (56 - index) : (120 - index);
-	md5_update (context, padding, padLen);
-	md5_update (context, bits, 8);
-	md5_encode (digest, context->state, 16);
+	sha256_update (context, padding, padLen);
+	sha256_update (context, bits, 8);
+	md5_encode (digest, context->state, 32);
 	md5_memset ((POINTER)context, 0, sizeof (*context));
+}
+
+void sha_print(unsigned char digest[])
+{
+  unsigned int i;
+
+  for (i = 0; i < 32; i++)
+  	printf("%02x", digest[i]);
 }

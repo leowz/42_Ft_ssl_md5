@@ -28,7 +28,8 @@ LIBSP 			= -L$(LIBFT_PATH)
 LIBS 			= -lft #-fsanitize=address
 
 SRC_NAME		= main.c md5.c mddriver.c md5_functions.c md5_functions2.c\
-				  md5_transform.c md5_utils.c
+				  md5_transform.c md5_utils.c\
+				  sha256.c sha256_transform.c shadriver.c
 
 OBJ_PATH 		= obj
 OBJ_NAME 		= $(SRC_NAME:.c=.o)

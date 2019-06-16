@@ -34,7 +34,7 @@ int			main(int ac, char **av)
 		if (ft_strcmp(av[1], "md5") == 0)
 			md5(ac, av);
 		else if (ft_strcmp(av[1], "sha256") == 0)
-			;
+			sha256(ac, av);
 		else
 		{
 			ft_dprintf(STDERR_FILENO,

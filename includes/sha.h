@@ -24,4 +24,10 @@ typedef struct
 }						SHA256_CTX;
 
 
+void					sha256(int ac, char **av);
+void sha256_init(SHA256_CTX *context);
+void sha256_update(SHA256_CTX *context, unsigned char *input, unsigned int inputLen);
+void sha256_final(unsigned char digest[], SHA256_CTX *context);
+void sha_print(unsigned char digest[]);
+
 #endif
