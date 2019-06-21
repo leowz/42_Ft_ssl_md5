@@ -6,7 +6,7 @@
 #    By: zweng <zweng@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/03/25 17:24:40 by zweng             #+#    #+#              #
-#    Updated: 2019/05/22 16:43:49 by zweng            ###   ########.fr        #
+#    Updated: 2019/06/19 16:54:23 by zweng            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ SRC_NAME		= main.c md5.c mddriver.c md5_functions.c md5_functions2.c\
 
 OBJ_PATH 		= obj
 OBJ_NAME 		= $(SRC_NAME:.c=.o)
-CFLAGS 			= -Wall -Wextra -Werror
+#CFLAGS 			= -Wall -Wextra -Werror
 
 # ----- part automatic -----
 SRCS 			:= $(addprefix $(SRC_PATH)/,$(SRC_NAME))

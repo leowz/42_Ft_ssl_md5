@@ -1,5 +1,4 @@
-#include "sha.h"
-#include "md5.h"
+#include "ft_ssl.h"
 
 void sha256_init(SHA256_CTX *context)
 {
@@ -67,5 +66,5 @@ void sha_print(unsigned char digest[])
   unsigned int i;
 
   for (i = 0; i < 32; i++)
-  	printf("%02x", digest[i]);
+  	ft_printf("%02x", digest[i]);
 }

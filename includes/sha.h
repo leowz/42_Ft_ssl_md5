@@ -28,6 +28,23 @@ void					sha256(int ac, char **av);
 void sha256_init(SHA256_CTX *context);
 void sha256_update(SHA256_CTX *context, unsigned char *input, unsigned int inputLen);
 void sha256_final(unsigned char digest[], SHA256_CTX *context);
+void sha256_transform(UINT4 state[4], unsigned char block[64]);
 void sha_print(unsigned char digest[]);
+
+#ifndef USE_MODIFIED_MACROS
+#define SHA_Ch(x,y,z)        (((x) & (y)) ^ ((~(x)) & (z)))
+#define SHA_Maj(x,y,z)       (((x) & (y)) ^ ((x) & (z)) ^ ((y) & (z)))
+#else /* USE_MODIFIED_MACROS */
+/*
+ * The following definitions are equivalent and potentially faster.
+ */
+
+#define SHA_Ch(x, y, z)      (((x) & ((y) ^ (z))) ^ (z))
+#define SHA_Maj(x, y, z)     (((x) & ((y) | (z))) | ((y) & (z)))
+
+#endif /* USE_MODIFIED_MACROS */
+
+#define SHA_Parity(x, y, z)  ((x) ^ (y) ^ (z))
+
 
 #endif

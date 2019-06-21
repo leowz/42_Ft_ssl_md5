@@ -1,4 +1,5 @@
 #include "ft_ssl.h"
+#include "sha.h"
 
 static void sha256_string (char *string)
 {
@@ -10,8 +11,8 @@ static void sha256_string (char *string)
 	sha256_update (&context, (unsigned char *)string, len);
 	sha256_final (digest, &context);
 
-	ft_printf ("MD%d (\"%s\") = ", 5, string);
-	sha256_print (digest);
+	ft_printf ("SHA%d (\"%s\") = ", 256, string);
+	sha_print (digest);
 	ft_printf ("\n");
 }
 
@@ -77,7 +78,12 @@ void sha256(int ac, char **av)
 		{
 			if (av[i][0] == '-' && av[i][1] == 's')
 			{
+				if (ft_strlen(av[i]) > 2)
+					sha256_string(av[i] + 2);
+				else if (++i < ac)
 					sha256_string(av[i]);
+				else
+					ft_printf("md5: option requires an argument -- s\n");
 			}
 			// else if (ft_strcmp (av[i], "-x") == 0)
 			// 	MDTestSuite();
