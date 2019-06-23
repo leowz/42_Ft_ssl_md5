@@ -30,6 +30,8 @@ void sha256_update(SHA256_CTX *context, unsigned char *input, unsigned int input
 void sha256_final(unsigned char digest[], SHA256_CTX *context);
 void sha256_transform(UINT4 state[4], unsigned char block[64]);
 void sha_print(unsigned char digest[]);
+void sha256_encode(unsigned char *output, UINT4 *input, unsigned int len);
+void sha256_decode(UINT4 *output, unsigned char *input, unsigned int len);
 
 #ifndef USE_MODIFIED_MACROS
 #define SHA_Ch(x,y,z)        (((x) & (y)) ^ ((~(x)) & (z)))

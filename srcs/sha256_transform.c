@@ -17,7 +17,7 @@
 #define SHA256_sigma1(word)   \
   (SHA256_ROTR(17,word) ^ SHA256_ROTR(19,word) ^ SHA256_SHR(10,word))
 
-void sha256_transform(UINT4 state[4], unsigned char block[64])
+void sha256_transform(UINT4 state[8], unsigned char block[64])
 {
 	  /* Constants defined in FIPS 180-3, section 4.2.2 */
   static const UINT4 K[64] = {
@@ -49,15 +49,12 @@ void sha256_transform(UINT4 state[4], unsigned char block[64])
 	// regi[5] = state[5];
 	// regi[6] = state[6];
 	// regi[7] = state[7];
-	A = state[0];
-	B = state[1];
-	C = state[2];
-	D = state[3];
-	E = state[4];
-	F = state[5];
-	G = state[6];
-	H = state[7];
-	md5_decode (W, block, 64);
+	sha256_decode (W, block, 64);
+
+	for (int j = 0; j < 16; j++)
+	{
+		printf("W[%d] = %#010x\n", j, W[j]);
+	}
 	// for (t = t4 = 0; t < 16; t++, t4 += 4)
  //    	W[t] = (((UINT4)block[t4]) << 24) |
  //           (((UINT4)block[t4 + 1]) << 16) |
@@ -66,6 +63,15 @@ void sha256_transform(UINT4 state[4], unsigned char block[64])
 
 	for (t = 16; t < 64; t++)
     	W[t] = SHA256_sigma1(W[t-2]) + W[t-7] + SHA256_sigma0(W[t-15]) + W[t-16];
+
+	A = state[0];
+	B = state[1];
+	C = state[2];
+	D = state[3];
+	E = state[4];
+	F = state[5];
+	G = state[6];
+	H = state[7];
 
 	for (t = 0; t < 64; t++) {
 	    temp1 = H + SHA256_SIGMA1(E) + SHA_Ch(E,F,G) + K[t] + W[t];
