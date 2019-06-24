@@ -59,42 +59,42 @@ void sha256_transform(UINT4 state[8], unsigned char block[64])
   };
   	int        t;
   	UINT4   temp1, temp2;            /* Temporary word value */
-  	UINT4   W[64];                   /* Word sequence */
-	UINT4   A, B, C, D, E, F, G, H;  /* Word buffers */
+  	UINT4   w[64];                   /* Word sequence */
+	UINT4	regi[8];
 
-	sha256_decode (W, block, 64);
+	sha256_decode (w, block, 64);
 
 	for (t = 16; t < 64; t++)
-    	W[t] = sha256_ssig1(W[t-2]) + W[t-7] + sha256_ssig0(W[t-15]) + W[t-16];
+    	w[t] = sha256_ssig1(w[t-2]) + w[t-7] + sha256_ssig0(w[t-15]) + w[t-16];
 
-	A = state[0];
-	B = state[1];
-	C = state[2];
-	D = state[3];
-	E = state[4];
-	F = state[5];
-	G = state[6];
-	H = state[7];
+	regi[0] = state[0];
+	regi[1] = state[1];
+	regi[2] = state[2];
+	regi[3] = state[3];
+	regi[4] = state[4];
+	regi[5] = state[5];
+	regi[6] = state[6];
+	regi[7] = state[7];
 
 	for (t = 0; t < 64; t++) {
-	    temp1 = H + sha256_bsig1(E) + sha256_ch(E,F,G) + K[t] + W[t];
-	    temp2 = sha256_bsig0(A) + sha256_maj(A,B,C);
-	    H = G;
-	    G = F;
-	    F = E;
-	    E = D + temp1;
-	    D = C;
-	    C = B;
-	    B = A;
-	    A = temp1 + temp2;
+	    temp1 = regi[7] + sha256_bsig1(regi[4]) + sha256_ch(regi[4], regi[5], regi[6]) + K[t] + w[t];
+	    temp2 = sha256_bsig0(regi[0]) + sha256_maj(regi[0], regi[1], regi[2]);
+	    regi[7] = regi[6];
+	    regi[6] = regi[5];
+	    regi[5] = regi[4];
+	    regi[4] = regi[3] + temp1;
+	    regi[3] = regi[2];
+	    regi[2] = regi[1];
+	    regi[1] = regi[0];
+	    regi[0] = temp1 + temp2;
     }
 
-    state[0] += A;
-	state[1] += B;
-	state[2] += C;
-	state[3] += D;
-	state[4] += E;
-    state[5] += F;
-	state[6] += G;
-	state[7] += H;
+    state[0] += regi[0];
+	state[1] += regi[1];
+	state[2] += regi[2];
+	state[3] += regi[3];
+	state[4] += regi[4];
+    state[5] += regi[5];
+	state[6] += regi[6];
+	state[7] += regi[7];
 }
