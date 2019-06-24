@@ -20,22 +20,18 @@ void sha256_update(SHA256_CTX *context, unsigned char *input, unsigned int input
 	unsigned int index;
 	unsigned int partLen;
 
-	printf("%s\n", "update");
 	index = (unsigned int)((context->count[0] >> 3) & 0x3F);
 	if ((context->count[0] += ((UINT4)inputLen << 3)) < ((UINT4)inputLen << 3))
 	  context->count[1]++;
 	context->count[1] += ((UINT4)inputLen >> 29);
-	printf("c1 %d, c0 %d\n", context->count[1], context->count[0]);
 	partLen = 64 - index;
 	if (inputLen >= partLen)
 	{
-		printf("%s\n", "update loop1");
 	  md5_memcpy ((POINTER)&context->buffer[index], (POINTER)input, partLen);
 	  sha256_transform (context->state, context->buffer);
 	  i = partLen;
 	  while (i + 63 < inputLen)
 	  {
-		printf("%s\n", "update loop2");
 		  sha256_transform (context->state, &input[i]);
 		  i += 64;
 	  }
@@ -43,7 +39,6 @@ void sha256_update(SHA256_CTX *context, unsigned char *input, unsigned int input
 	}
 	else
 	{
-		printf("%s\n", "update else");
 	  i = 0;
 	}
 	md5_memcpy ((POINTER)&context->buffer[index], (POINTER)&input[i], inputLen-i);
@@ -52,7 +47,7 @@ void sha256_update(SHA256_CTX *context, unsigned char *input, unsigned int input
 
 void sha256_encode_length(unsigned char *output, UINT4 *input, unsigned int len)
 {
-
+	(void)len;
     output[4] = (unsigned char)((input[0] >> 24) & 0xff);
     output[5] = (unsigned char)((input[0] >> 16) & 0xff);
     output[6] = (unsigned char)((input[0] >> 8) & 0xff);

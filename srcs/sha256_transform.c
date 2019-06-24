@@ -1,21 +1,43 @@
 #include "sha.h"
 #include "md5.h"
-/* Define the SHA shift, rotate left, and rotate right macros */
-#define SHA256_SHR(bits,word)      ((word) >> (bits))
-#define SHA256_ROTL(bits,word)                         \
-  (((word) << (bits)) | ((word) >> (32-(bits))))
-#define SHA256_ROTR(bits,word)                         \
-  (((word) >> (bits)) | ((word) << (32-(bits))))
 
-/* Define the SHA SIGMA and sigma macros */
-#define SHA256_SIGMA0(word)   \
-  (SHA256_ROTR( 2,word) ^ SHA256_ROTR(13,word) ^ SHA256_ROTR(22,word))
-#define SHA256_SIGMA1(word)   \
-  (SHA256_ROTR( 6,word) ^ SHA256_ROTR(11,word) ^ SHA256_ROTR(25,word))
-#define SHA256_sigma0(word)   \
-  (SHA256_ROTR( 7,word) ^ SHA256_ROTR(18,word) ^ SHA256_SHR( 3,word))
-#define SHA256_sigma1(word)   \
-  (SHA256_ROTR(17,word) ^ SHA256_ROTR(19,word) ^ SHA256_SHR(10,word))
+UINT4 sha256_ch(UINT4 x, UINT4 y, UINT4 z)
+{
+	return ((x & y) ^ ((~x) & z));
+}
+
+UINT4 sha256_maj(UINT4 x, UINT4 y, UINT4 z)
+{
+	return ((x & y) ^ (x & z) ^ (y & z));
+}
+
+UINT4 sha256_bsig0(UINT4 word)
+{
+	 return ((word >> 2) | (word << 30))
+	 ^ ((word >> 13) | (word << 19))
+	 ^ ((word >> 22) | (word << 10));
+}
+
+UINT4 sha256_bsig1(UINT4 word)
+{
+	 return ((word >> 6) | (word << 26))
+	 ^ ((word >> 11) | (word << 21))
+	 ^ ((word >> 25) | (word << 7));
+}
+
+UINT4 sha256_ssig0(UINT4 word)
+{
+	 return ((word >> 7) | (word << 25))
+	 ^ ((word >> 18) | (word << 14))
+	 ^ (word >> 3);
+}
+
+UINT4 sha256_ssig1(UINT4 word)
+{
+	 return ((word >> 17) | (word << 15))
+	 ^ ((word >> 19) | (word << 13))
+	 ^ (word >> 10);
+}
 
 void sha256_transform(UINT4 state[8], unsigned char block[64])
 {
@@ -35,34 +57,15 @@ void sha256_transform(UINT4 state[8], unsigned char block[64])
       0x682e6ff3, 0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
       0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
   };
-  	int        t, t4;                   /* Loop counter */
+  	int        t;
   	UINT4   temp1, temp2;            /* Temporary word value */
   	UINT4   W[64];                   /* Word sequence */
-	// UINT4	regi[8];
 	UINT4   A, B, C, D, E, F, G, H;  /* Word buffers */
 
-	// regi[0] = state[0];
-	// regi[1] = state[1];
-	// regi[2] = state[2];
-	// regi[3] = state[3];
-	// regi[4] = state[4];
-	// regi[5] = state[5];
-	// regi[6] = state[6];
-	// regi[7] = state[7];
 	sha256_decode (W, block, 64);
 
-	for (int j = 0; j < 16; j++)
-	{
-		printf("W[%d] = %#010x\n", j, W[j]);
-	}
-	// for (t = t4 = 0; t < 16; t++, t4 += 4)
- //    	W[t] = (((UINT4)block[t4]) << 24) |
- //           (((UINT4)block[t4 + 1]) << 16) |
- //           (((UINT4)block[t4 + 2]) << 8) |
- //           (((UINT4)block[t4 + 3]));
-
 	for (t = 16; t < 64; t++)
-    	W[t] = SHA256_sigma1(W[t-2]) + W[t-7] + SHA256_sigma0(W[t-15]) + W[t-16];
+    	W[t] = sha256_ssig1(W[t-2]) + W[t-7] + sha256_ssig0(W[t-15]) + W[t-16];
 
 	A = state[0];
 	B = state[1];
@@ -74,8 +77,8 @@ void sha256_transform(UINT4 state[8], unsigned char block[64])
 	H = state[7];
 
 	for (t = 0; t < 64; t++) {
-	    temp1 = H + SHA256_SIGMA1(E) + SHA_Ch(E,F,G) + K[t] + W[t];
-	    temp2 = SHA256_SIGMA0(A) + SHA_Maj(A,B,C);
+	    temp1 = H + sha256_bsig1(E) + sha256_ch(E,F,G) + K[t] + W[t];
+	    temp2 = sha256_bsig0(A) + sha256_maj(A,B,C);
 	    H = G;
 	    G = F;
 	    F = E;
@@ -85,15 +88,6 @@ void sha256_transform(UINT4 state[8], unsigned char block[64])
 	    B = A;
 	    A = temp1 + temp2;
     }
-
- //    state[0] += regi[0];
-	// state[1] += regi[1];
-	// state[2] += regi[2];
-	// state[3] += regi[3];
-	// state[4] += regi[4];
- //    state[5] += regi[5];
-	// state[6] += regi[6];
-	// state[7] += regi[7];
 
     state[0] += A;
 	state[1] += B;

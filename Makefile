@@ -33,7 +33,7 @@ SRC_NAME		= main.c md5.c mddriver.c md5_functions.c md5_functions2.c\
 
 OBJ_PATH 		= obj
 OBJ_NAME 		= $(SRC_NAME:.c=.o)
-#CFLAGS 			= -Wall -Wextra -Werror
+CFLAGS 			= -Wall -Wextra -Werror
 
 # ----- part automatic -----
 SRCS 			:= $(addprefix $(SRC_PATH)/,$(SRC_NAME))

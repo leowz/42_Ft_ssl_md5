@@ -33,20 +33,7 @@ void sha_print(unsigned char digest[]);
 void sha256_encode(unsigned char *output, UINT4 *input, unsigned int len);
 void sha256_decode(UINT4 *output, unsigned char *input, unsigned int len);
 
-#ifndef USE_MODIFIED_MACROS
 #define SHA_Ch(x,y,z)        (((x) & (y)) ^ ((~(x)) & (z)))
 #define SHA_Maj(x,y,z)       (((x) & (y)) ^ ((x) & (z)) ^ ((y) & (z)))
-#else /* USE_MODIFIED_MACROS */
-/*
- * The following definitions are equivalent and potentially faster.
- */
-
-#define SHA_Ch(x, y, z)      (((x) & ((y) ^ (z))) ^ (z))
-#define SHA_Maj(x, y, z)     (((x) & ((y) | (z))) | ((y) & (z)))
-
-#endif /* USE_MODIFIED_MACROS */
-
-#define SHA_Parity(x, y, z)  ((x) ^ (y) ^ (z))
-
 
 #endif
