@@ -13,8 +13,6 @@
 #ifndef MD5_H
 # define MD5_H
 
-# include <stdio.h>
-
 # define S11 7
 # define S12 12
 # define S13 17

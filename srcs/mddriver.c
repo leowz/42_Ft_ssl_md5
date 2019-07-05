@@ -1,4 +1,6 @@
 #include "ft_ssl.h"
+#include <sys/stat.h> 
+#include <fcntl.h>
 
 static void md5_string (char *string)
 {
@@ -15,81 +17,116 @@ static void md5_string (char *string)
 	ft_printf ("\n");
 }
 
-static void MDTestSuite ()
-{
-	printf ("MD%d test suite:\n", 5);
-
-	md5_string ("");
-	md5_string ("a");
-	md5_string ("abc");
-	md5_string ("message digest");
-	md5_string ("abcdefghijklmnopqrstuvwxyz");
-	md5_string ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
-	md5_string ("12345678901234567890123456789012345678901234567890123456789012345678901234567890");
-}
-
 static void md5_file (char *filename)
 {
-	FILE *file;
 	MD5_CTX context;
 	int len;
-	unsigned char buffer[1024], digest[16];
+	int pfd;	
+	unsigned char buffer[16], digest[16];
 
-	if ((file = fopen (filename, "rb")) == NULL)
-		printf ("%s can't be opened\n", filename);
+	ft_printf("filename %s\n", filename);	
+	if ((pfd = open(filename, O_RDONLY)) == -1)
+	{
+		ft_printf ("%s can't be opened\n", filename);
+	}
 	else
 	{
 		md5_init(&context);
-		while ((len = fread (buffer, 1, 1024, file)))
+		while ((len = read (pfd, buffer, 16)) > 0) 
 			md5_update(&context, buffer, len);
 		md5_final(digest, &context);
-		fclose (file);
-		
+
+		close (pfd);
 		ft_printf ("MD5 (%s) = ", filename);
 		md5_print (digest);
 		ft_printf ("\n");
 	}
 }
 
-static void md5_filter(void)
+static int strmerge(unsigned char **s1, int s1Len, unsigned char *s2, int len) {
+	unsigned char *ret;
+
+	ret = NULL;
+	if (s1Len == 0)
+	{
+		if ((ret = (unsigned char *)ft_strnew(len)))
+		{
+			ft_memcpy(ret, s2, len);
+			*s1 = ret;
+			return (len);
+		}
+		return (0);
+	}
+	if ((ret = (unsigned char *)ft_strnew(s1Len + len)))
+	{
+		ft_memcpy(ret, *s1, s1Len);
+		ft_memcpy(ret + s1Len, s2, len);
+		ft_strdel((char **)s1);
+		*s1 = ret;
+	}
+	return (s1Len + len);
+}
+
+static void md5_filter(int repeat)
 {
 	MD5_CTX context;
 	int len;
 	unsigned char buffer[16], digest[16];
+	unsigned char *str;
+	int retLen;
 
+	str = NULL;
+	retLen = 0;
 	md5_init(&context);
-	while ((len = fread (buffer, 1, 16, stdin)))
+	while ((len = read(STDIN_FILENO, buffer, 16)) > 0)
+	{
 		md5_update(&context, buffer, len);
+		if (repeat)
+			retLen = strmerge(&str, retLen, buffer, len);
+	}
 	md5_final(digest, &context);
 
+	if (repeat)
+	{
+		ft_printf("%s", str);
+		ft_strdel((char **)&str);
+	}
 	md5_print (digest);
 	ft_printf ("\n");
 }
 
-void md5(int ac, char **av)
+void hash(int ac, char **av, int index)
 {
 	int i;
+	int	f; //  q=2, r=1	
 
 	if (ac > 2)
 	{
 		i = 1;
 		while (++i < ac)
 		{
-			if (av[i][0] == '-' && av[i][1] == 's')
+			if (av[i][0] == '-')
 			{
-				if (ft_strlen(av[i]) > 2)
-					md5_string(av[i] + 2);
-				else if (++i < ac)
-					md5_string(av[i]);
+				if (av[i][1] == 's')
+				{
+					if (++i < ac)
+						md5_string(av[i]);
+					else
+						ft_printf("md5: option requires an argument -- s\n");
+				}
+				else if (av[i][1] == 'p')
+					md5_filter(1);
+				else if (av[i][1] == 'q')
+					f = 2;
+				else if (av[i][1] == 's')
+					f = 1;
 				else
-					ft_printf("md5: option requires an argument -- s\n");
+					ft_printf("md5: illegal option -- c\n", av[i][1]);
 			}
-			else if (ft_strcmp (av[i], "-x") == 0)
-				MDTestSuite();
 			else
 				md5_file(av[i]);
 		}
 	}
 	else
-		md5_filter();
+		md5_filter(0);
 }

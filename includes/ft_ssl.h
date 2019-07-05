@@ -18,4 +18,11 @@
 # include "md5.h"
 # include "sha.h"
 
+int     xgetopt(int argc, char **argv, const char *optstring);
+void	hash(int ac, char **av, int index);
+
+char    *xoptarg;
+int     xoptind;
+int     xopterr;
+	
 #endif
