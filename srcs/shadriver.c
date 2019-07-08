@@ -1,7 +1,7 @@
 #include "ft_ssl.h"
 #include "sha.h"
 
-static void sha256_string (char *string)
+void sha256_string (char *string, int flag)
 {
 	SHA256_CTX context;
 	unsigned char digest[32];
@@ -16,81 +16,40 @@ static void sha256_string (char *string)
 	ft_printf ("\n");
 }
 
-// static void MDTestSuite ()
-// {
-// 	printf ("MD%d test suite:\n", 5);
-
-// 	md5_string ("");
-// 	md5_string ("a");
-// 	md5_string ("abc");
-// 	md5_string ("message digest");
-// 	md5_string ("abcdefghijklmnopqrstuvwxyz");
-// 	md5_string ("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
-// 	md5_string ("12345678901234567890123456789012345678901234567890123456789012345678901234567890");
-// }
-
-// static void md5_file (char *filename)
-// {
-// 	FILE *file;
-// 	MD5_CTX context;
-// 	int len;
-// 	unsigned char buffer[1024], digest[16];
-
-// 	if ((file = fopen (filename, "rb")) == NULL)
-// 		printf ("%s can't be opened\n", filename);
-// 	else
-// 	{
-// 		md5_init(&context);
-// 		while ((len = fread (buffer, 1, 1024, file)))
-// 			md5_update(&context, buffer, len);
-// 		md5_final(digest, &context);
-// 		fclose (file);
-		
-// 		ft_printf ("MD5 (%s) = ", filename);
-// 		md5_print (digest);
-// 		ft_printf ("\n");
-// 	}
-// }
-
-// static void md5_filter(void)
-// {
-// 	MD5_CTX context;
-// 	int len;
-// 	unsigned char buffer[16], digest[16];
-
-// 	md5_init(&context);
-// 	while ((len = fread (buffer, 1, 16, stdin)))
-// 		md5_update(&context, buffer, len);
-// 	md5_final(digest, &context);
-
-// 	md5_print (digest);
-// 	ft_printf ("\n");
-// }
-
-void sha256(int ac, char **av)
+void sha256_file (char *filename, int flag)
 {
-	int i;
+	FILE *file;
+	SHA256_CTX context;
+	int len;
+	unsigned char buffer[1024], digest[32];
 
-	if (ac > 2)
+	if ((file = fopen (filename, "rb")) == NULL)
+		printf ("%s can't be opened\n", filename);
+	else
 	{
-		i = 1;
-		while (++i < ac)
-		{
-			if (av[i][0] == '-' && av[i][1] == 's')
-			{
-				if (ft_strlen(av[i]) > 2)
-					sha256_string(av[i] + 2);
-				else if (++i < ac)
-					sha256_string(av[i]);
-				else
-					ft_printf("md5: option requires an argument -- s\n");
-			}
-			// else if (ft_strcmp (av[i], "-x") == 0)
-			// 	MDTestSuite();
-			// else
-			// 	md5_file(av[i]);
-		}
+		sha256_init(&context);
+		while ((len = fread (buffer, 1, 1024, file)))
+			sha256_update(&context, buffer, len);
+		sha256_final(digest, &context);
+		fclose (file);
+		
+		ft_printf ("MD5 (%s) = ", filename);
+		sha_print (digest);
+		ft_printf ("\n");
 	}
-	// else
-	// 	md5_filter();
+}
+
+void sha256_filter(int repeat)
+{
+	SHA256_CTX context;
+	int len;
+	unsigned char buffer[32], digest[32];
+
+	sha256_init(&context);
+	while ((len = fread (buffer, 1, 32, stdin)))
+		sha256_update(&context, buffer, len);
+	sha256_final(digest, &context);
+
+	sha_print (digest);
+	ft_printf ("\n");
 }

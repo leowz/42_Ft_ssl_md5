@@ -27,6 +27,46 @@ static void	usage(void)
 	ft_printf("usage: ft_ssl command [command opts] [command args]\n");
 }
 
+void hash(int ac, char **av, int index)
+{
+	int i;
+	int	f; //  q=2, r=1, default=0
+	void	(*string[2])(char *, int) = {md5_string, sha256_string};
+	void	(*filter[2])(int) = {md5_filter, sha256_filter};
+	void	(*file[2])(char *, int) = {md5_file, sha256_file};
+
+	f = F_DEFAULT;
+	if (ac > 2)
+	{
+		i = 1;
+		while (++i < ac)
+		{
+			if (av[i][0] == '-')
+			{
+				if (av[i][1] == 's')
+				{
+					if (++i < ac)
+						(*string[index])(av[i], f);
+					else
+						ft_printf("md5: option requires an argument -- s\n");
+				}
+				else if (av[i][1] == 'p')
+					(*filter[index])(1);
+				else if (av[i][1] == 'q')
+					f = F_QUITE;
+				else if (av[i][1] == 'r')
+					f = F_REVERSE;
+				else
+					ft_printf("md5: illegal option -- %c\n", av[i][1]);
+			}
+			else
+				(*file[index])(av[i], f);
+		}
+	}
+	else
+		(*filter[index])(0);
+}
+
 int			main(int ac, char **av)
 {
 	if (ac > 1)

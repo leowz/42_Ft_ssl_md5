@@ -18,11 +18,17 @@
 # include "md5.h"
 # include "sha.h"
 
-int     xgetopt(int argc, char **argv, const char *optstring);
+# define F_QUITE	2
+# define F_REVERSE	1
+# define F_DEFAULT	0
+
 void	hash(int ac, char **av, int index);
 
-char    *xoptarg;
-int     xoptind;
-int     xopterr;
+void	md5_string (char *string, int flag);
+void 	md5_file (char *filename, int flag);
+void md5_filter(int repeat);
+void sha256_string (char *string, int flag);
+void sha256_file (char *filename, int flag);
+void sha256_filter(int repeat);
 	
 #endif

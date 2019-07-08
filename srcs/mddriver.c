@@ -2,7 +2,28 @@
 #include <sys/stat.h> 
 #include <fcntl.h>
 
-static void md5_string (char *string)
+static void print(unsigned char digest[], char *string, int f)
+{
+	if (f == F_QUITE) //quit
+	{
+		md5_print (digest);
+		ft_printf ("\n");
+	}
+	else if (f == F_REVERSE) // reverse
+	{
+		md5_print (digest);
+		ft_printf (" \"%s\"", string);
+		ft_printf ("\n");
+	}
+	else
+	{
+		ft_printf ("MD%d (\"%s\") = ", 5, string);
+		md5_print (digest);
+		ft_printf ("\n");
+	}
+}
+
+void md5_string (char *string, int flag)
 {
 	MD5_CTX context;
 	unsigned char digest[16];
@@ -11,20 +32,16 @@ static void md5_string (char *string)
 	md5_init (&context);
 	md5_update (&context, (unsigned char *)string, len);
 	md5_final (digest, &context);
-
-	ft_printf ("MD%d (\"%s\") = ", 5, string);
-	md5_print (digest);
-	ft_printf ("\n");
+	print(digest, string, flag);
 }
 
-static void md5_file (char *filename)
+void md5_file (char *filename, int flag)
 {
 	MD5_CTX context;
 	int len;
 	int pfd;	
 	unsigned char buffer[16], digest[16];
 
-	ft_printf("filename %s\n", filename);	
 	if ((pfd = open(filename, O_RDONLY)) == -1)
 	{
 		ft_printf ("%s can't be opened\n", filename);
@@ -37,9 +54,7 @@ static void md5_file (char *filename)
 		md5_final(digest, &context);
 
 		close (pfd);
-		ft_printf ("MD5 (%s) = ", filename);
-		md5_print (digest);
-		ft_printf ("\n");
+		print(digest, filename, flag);
 	}
 }
 
@@ -67,7 +82,7 @@ static int strmerge(unsigned char **s1, int s1Len, unsigned char *s2, int len) {
 	return (s1Len + len);
 }
 
-static void md5_filter(int repeat)
+void md5_filter(int repeat)
 {
 	MD5_CTX context;
 	int len;
@@ -91,42 +106,5 @@ static void md5_filter(int repeat)
 		ft_printf("%s", str);
 		ft_strdel((char **)&str);
 	}
-	md5_print (digest);
-	ft_printf ("\n");
-}
-
-void hash(int ac, char **av, int index)
-{
-	int i;
-	int	f; //  q=2, r=1	
-
-	if (ac > 2)
-	{
-		i = 1;
-		while (++i < ac)
-		{
-			if (av[i][0] == '-')
-			{
-				if (av[i][1] == 's')
-				{
-					if (++i < ac)
-						md5_string(av[i]);
-					else
-						ft_printf("md5: option requires an argument -- s\n");
-				}
-				else if (av[i][1] == 'p')
-					md5_filter(1);
-				else if (av[i][1] == 'q')
-					f = 2;
-				else if (av[i][1] == 's')
-					f = 1;
-				else
-					ft_printf("md5: illegal option -- c\n", av[i][1]);
-			}
-			else
-				md5_file(av[i]);
-		}
-	}
-	else
-		md5_filter(0);
+	print(digest, NULL, F_QUITE);
 }
