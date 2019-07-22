@@ -18,7 +18,8 @@
 # include "md5.h"
 # include "sha.h"
 
-# define F_QUITE	2
+# define F_QUITE	4
+# define F_FILE		2
 # define F_REVERSE	1
 # define F_DEFAULT	0
 

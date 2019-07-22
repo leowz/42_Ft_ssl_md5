@@ -53,9 +53,9 @@ void hash(int ac, char **av, int index)
 				else if (av[i][1] == 'p')
 					(*filter[index])(1);
 				else if (av[i][1] == 'q')
-					f = F_QUITE;
+					f += F_QUITE;
 				else if (av[i][1] == 'r')
-					f = F_REVERSE;
+					f += F_REVERSE;
 				else
 					ft_printf("md5: illegal option -- %c\n", av[i][1]);
 			}

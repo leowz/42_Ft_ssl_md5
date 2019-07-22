@@ -6,12 +6,12 @@ static void print(unsigned char digest[], char *string, int f)
 {
 	if (f & F_QUITE)
 	{
-		md5_print (digest);
+		sha_print (digest);
 		ft_printf ("\n");
 	}
 	else if (f & F_REVERSE)
 	{
-		md5_print (digest);
+		sha_print (digest);
 		if (f & F_FILE)
 			ft_printf (" %s", string);
 		else
@@ -21,43 +21,41 @@ static void print(unsigned char digest[], char *string, int f)
 	else
 	{
 		if (f & F_FILE)
-			ft_printf ("MD%d (%s) = ", 5, string);
+			ft_printf ("SHA%d (%s) = ", 256, string);
 		else
-			ft_printf ("MD%d (\"%s\") = ", 5, string);
-		md5_print (digest);
+			ft_printf ("SHA%d (\"%s\") = ", 256, string);
+		sha_print (digest);
 		ft_printf ("\n");
 	}
 }
 
-void md5_string (char *string, int flag)
+void sha256_string (char *string, int flag)
 {
-	MD5_CTX context;
-	unsigned char digest[16];
-	unsigned int len;
+	SHA256_CTX context;
+	unsigned char digest[32];
+	unsigned int len = ft_strlen(string);
 
-	len = ft_strlen(string);
-	md5_init(&context);
-	md5_update(&context, (unsigned char *)string, len);
-	md5_final(digest, &context);
+	sha256_init(&context);
+	sha256_update(&context, (unsigned char *)string, len);
+	sha256_final(digest, &context);
 	print(digest, string, flag);
 }
 
-void md5_file (char *filename, int flag)
+void sha256_file (char *filename, int flag)
 {
-	MD5_CTX context;
+	SHA256_CTX context;
 	int len;
-	int pfd;	
-	unsigned char buffer[16];
+	int pfd;
+	unsigned char buffer[32];
 
 	if ((pfd = open(filename, O_RDONLY)) == -1)
-		ft_printf ("%s can't be opened\n", filename);
+		printf ("%s can't be opened\n", filename);
 	else
 	{
-		md5_init(&context);
-		while ((len = read (pfd, buffer, 16)) > 0) 
-			md5_update(&context, buffer, len);
-		md5_final(buffer, &context);
-
+		sha256_init(&context);
+		while ((len = read (pfd, buffer, 32)) > 0)
+			sha256_update(&context, buffer, len);
+		sha256_final(buffer, &context);
 		close (pfd);
 		flag += F_FILE;
 		print(buffer, filename, flag);
@@ -89,24 +87,24 @@ static int strmerge(unsigned char **s1, int s1Len, unsigned char *s2, int len)
 	return (0);
 }
 
-void md5_filter(int repeat)
+void sha256_filter(int repeat)
 {
-	MD5_CTX context;
-	unsigned char buffer[16];
+	SHA256_CTX context;
+	unsigned char buffer[32];
 	unsigned char *str;
 	int len;
 	int retLen;
 
 	str = NULL;
 	retLen = 0;
-	md5_init(&context);
-	while ((len = read(STDIN_FILENO, buffer, 16)) > 0)
+	sha256_init(&context);
+	while ((len = read(STDIN_FILENO, buffer, 32)) > 0)
 	{
-		md5_update(&context, buffer, len);
+		sha256_update(&context, buffer, len);
 		if (repeat)
 			retLen = strmerge(&str, retLen, buffer, len);
 	}
-	md5_final(buffer, &context);
+	sha256_final(buffer, &context);
 	if (repeat)
 	{
 		ft_printf("%s", str);
