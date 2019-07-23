@@ -29,21 +29,21 @@ static void print(unsigned char digest[], char *string, int f)
 	}
 }
 
-void sha256_string (char *string, int flag)
+void sha512_string (char *string, int flag)
 {
-	SHA256_CTX context;
+	SHA512_CTX context;
 	unsigned char digest[32];
 	unsigned int len = ft_strlen(string);
 
-	sha256_init(&context);
-	sha256_update(&context, (unsigned char *)string, len);
-	sha256_final(digest, &context);
+	sha512_init(&context);
+	sha512_update(&context, (unsigned char *)string, len);
+	sha512_final(digest, &context);
 	print(digest, string, flag);
 }
 
-void sha256_file (char *filename, int flag)
+void sha512_file (char *filename, int flag)
 {
-	SHA256_CTX context;
+	SHA512_CTX context;
 	int len;
 	int pfd;
 	unsigned char buffer[32];
@@ -52,10 +52,10 @@ void sha256_file (char *filename, int flag)
 		printf ("%s can't be opened\n", filename);
 	else
 	{
-		sha256_init(&context);
+		sha512_init(&context);
 		while ((len = read (pfd, buffer, 32)) > 0)
-			sha256_update(&context, buffer, len);
-		sha256_final(buffer, &context);
+			sha512_update(&context, buffer, len);
+		sha512_final(buffer, &context);
 		close (pfd);
 		flag += F_FILE;
 		print(buffer, filename, flag);
@@ -87,9 +87,9 @@ static int strmerge(unsigned char **s1, int s1Len, unsigned char *s2, int len)
 	return (0);
 }
 
-void sha256_filter(int repeat)
+void sha512_filter(int repeat)
 {
-	SHA256_CTX context;
+	SHA512_CTX context;
 	unsigned char buffer[32];
 	unsigned char *str;
 	int len;
@@ -97,14 +97,14 @@ void sha256_filter(int repeat)
 
 	str = NULL;
 	retLen = 0;
-	sha256_init(&context);
+	sha512_init(&context);
 	while ((len = read(STDIN_FILENO, buffer, 32)) > 0)
 	{
-		sha256_update(&context, buffer, len);
+		sha512_update(&context, buffer, len);
 		if (repeat)
 			retLen = strmerge(&str, retLen, buffer, len);
 	}
-	sha256_final(buffer, &context);
+	sha512_final(buffer, &context);
 	if (repeat)
 	{
 		ft_printf("%s", str);
