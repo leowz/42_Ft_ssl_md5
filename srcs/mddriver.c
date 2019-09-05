@@ -59,7 +59,6 @@ void md5_file (char *filename, int flag)
 		md5_final(buffer, &context);
 
 		close (pfd);
-		flag += F_FILE;
 		print(buffer, filename, flag);
 	}
 }

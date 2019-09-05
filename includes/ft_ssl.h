@@ -6,7 +6,7 @@
 /*   By: zweng <zweng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/25 17:29:17 by zweng             #+#    #+#             */
-/*   Updated: 2019/04/03 17:23:03 by zweng            ###   ########.fr       */
+/*   Updated: 2019/09/04 18:45:57 by zweng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,11 @@
 # include "md5.h"
 # include "sha.h"
 
-# define F_QUITE	4
-# define F_FILE		2
-# define F_REVERSE	1
+# define F_P		16
+# define F_QUITE	8
+# define F_FILE		4
+# define F_REVERSE	2
+# define F_STRING	1
 # define F_DEFAULT	0
 
 void	hash(int ac, char **av, int index);

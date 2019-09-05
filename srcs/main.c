@@ -6,7 +6,7 @@
 /*   By: zweng <zweng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/25 17:28:19 by zweng             #+#    #+#             */
-/*   Updated: 2019/05/22 16:44:25 by zweng            ###   ########.fr       */
+/*   Updated: 2019/09/05 17:33:51 by zweng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,29 +39,43 @@ void hash(int ac, char **av, int index)
 	if (ac > 2)
 	{
 		i = 1;
-		while (++i < ac)
+		while (++i < ac && !(f & F_FILE))
 		{
-			if (av[i][0] == '-')
+			if (av[i][0] == '-' && av[i][1] == 's')
 			{
-				if (av[i][1] == 's')
+				if (++i < ac)
 				{
-					if (++i < ac)
-						(*string[index])(av[i], f);
-					else
-						ft_printf("md5: option requires an argument -- s\n");
+					f = f | F_STRING;
+					(*string[index])(av[i], f);
 				}
-				else if (av[i][1] == 'p')
-					(*filter[index])(1);
-				else if (av[i][1] == 'q')
-					f += F_QUITE;
-				else if (av[i][1] == 'r')
-					f += F_REVERSE;
 				else
-					ft_printf("md5: illegal option -- %c\n", av[i][1]);
+					ft_printf("md5: option requires an argument -- s\n");
 			}
+			else if (av[i][0] == '-' && av[i][1] == 'q')
+			{
+				f = f | F_QUITE;
+			}
+			else if (av[i][0] == '-' && av[i][1] == 'r')
+			{
+				f = f | F_REVERSE;
+			}
+			else if (av[i][0] == '-' && av[i][1] == 'p')
+			{
+				f = f | F_P;
+				(*filter[index])(f & F_P);
+			}
+			else if (av[i][0] == '-')
+				ft_printf("md5: illegal option -- %c\n", av[i][1]);
 			else
-				(*file[index])(av[i], f);
+			{
+				f = f | F_FILE;
+				break ;
+			}
 		}
+		if (!(f & F_P) && (!(f & F_STRING) && !(f & F_FILE)))
+			(*filter[index])(f & F_P);
+		while (i < ac)
+			(*file[index])(av[i++], f);
 	}
 	else
 		(*filter[index])(0);
