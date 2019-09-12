@@ -6,7 +6,7 @@
 /*   By: zweng <zweng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/25 17:28:19 by zweng             #+#    #+#             */
-/*   Updated: 2019/09/05 17:33:51 by zweng            ###   ########.fr       */
+/*   Updated: 2019/09/12 17:45:54 by zweng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,9 @@ void hash(int ac, char **av, int index)
 					ft_printf("md5: option requires an argument -- s\n");
 			}
 			else if (av[i][0] == '-' && av[i][1] == 'q')
-			{
 				f = f | F_QUITE;
-			}
 			else if (av[i][0] == '-' && av[i][1] == 'r')
-			{
 				f = f | F_REVERSE;
-			}
 			else if (av[i][0] == '-' && av[i][1] == 'p')
 			{
 				f = f | F_P;

@@ -57,7 +57,6 @@ void sha256_file (char *filename, int flag)
 			sha256_update(&context, buffer, len);
 		sha256_final(buffer, &context);
 		close (pfd);
-		flag += F_FILE;
 		print(buffer, filename, flag);
 	}
 }
