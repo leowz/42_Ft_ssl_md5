@@ -35,7 +35,8 @@ void md5_update(MD5_CTX *context, unsigned char *input, unsigned int inputLen)
 	}
 	else
 	  i = 0;
-	md5_memcpy ((POINTER)&context->buffer[index], (POINTER)&input[i], inputLen-i);
+	md5_memcpy ((POINTER)&context->buffer[index],
+			(POINTER)&input[i], inputLen-i);
 }
 
 void md5_final(unsigned char digest[16], MD5_CTX *context)
@@ -48,11 +49,11 @@ void md5_final(unsigned char digest[16], MD5_CTX *context)
 	  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 	};
 
-	md5_encode (bits, context->count, 8);
+	md5_encode(bits, context->count, 8);
 	index = (unsigned int)((context->count[0] >> 3) & 0x3f);
 	padLen = (index < 56) ? (56 - index) : (120 - index);
-	md5_update (context, padding, padLen);
-	md5_update (context, bits, 8);
-	md5_encode (digest, context->state, 16);
-	md5_memset ((POINTER)context, 0, sizeof (*context));
+	md5_update(context, padding, padLen);
+	md5_update(context, bits, 8);
+	md5_encode(digest, context->state, 16);
+	md5_memset((POINTER)context, 0, sizeof(*context));
 }

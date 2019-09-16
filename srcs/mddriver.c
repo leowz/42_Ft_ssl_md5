@@ -50,7 +50,7 @@ void md5_file (char *filename, int flag)
 	unsigned char buffer[16];
 
 	if ((pfd = open(filename, O_RDONLY)) == -1)
-		ft_printf ("%s can't be opened\n", filename);
+		ft_printf ("ft_ssl: md5: %s: No such file or directory\n", filename);
 	else
 	{
 		md5_init(&context);

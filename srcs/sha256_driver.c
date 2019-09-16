@@ -49,7 +49,8 @@ void sha256_file (char *filename, int flag)
 	unsigned char buffer[32];
 
 	if ((pfd = open(filename, O_RDONLY)) == -1)
-		printf ("%s can't be opened\n", filename);
+		ft_printf ("ft_ssl: sha256: %s: No such file or directory\n",
+				filename);
 	else
 	{
 		sha256_init(&context);
