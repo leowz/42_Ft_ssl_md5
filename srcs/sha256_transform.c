@@ -25,7 +25,8 @@ static void processing(UINT4 *regi, UINT4 *w, int t)
     UINT4   temp1;
     UINT4	temp2;
 
-    temp1 = regi[7] + sha256_bsig1(regi[4]) + sha256_ch(regi[4], regi[5], regi[6]) + g_k[t] + w[t];
+    temp1 = regi[7] + sha256_bsig1(regi[4])
+		+ sha256_ch(regi[4], regi[5], regi[6]) + g_k[t] + w[t];
 	temp2 = sha256_bsig0(regi[0]) + sha256_maj(regi[0], regi[1], regi[2]);
 	regi[7] = regi[6];
 	regi[6] = regi[5];
