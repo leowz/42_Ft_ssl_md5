@@ -6,7 +6,7 @@
 /*   By: zweng <zweng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 11:39:20 by zweng             #+#    #+#             */
-/*   Updated: 2019/06/14 16:18:08 by zweng            ###   ########.fr       */
+/*   Updated: 2019/09/18 21:02:25 by zweng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,40 +30,40 @@
 # define S43 15
 # define S44 21
 
-typedef unsigned char	*POINTER;
-typedef unsigned int	UINT4;
+typedef unsigned char		*t_pointer;
+typedef unsigned int		t_uint4;
 typedef struct
 {
-  UINT4					count[2];
-  UINT4					state[4];
-  unsigned char			buffer[64];
-}						MD5_CTX;
+	t_uint4					count[2];
+	t_uint4					state[4];
+	unsigned char			buffer[64];
+}	t_md5;
 
 void						md5(int argc, char **argv);
-void						md5_init(MD5_CTX *);
-void						md5_update(MD5_CTX *,
-							unsigned char *, unsigned int);
-void						md5_transform(UINT4 state[4],
+void						md5_init(t_md5 *ctx);
+void						md5_update(t_md5 *ctx,
+							unsigned char *str, unsigned int len);
+void						md5_transform(t_uint4 state[4],
 							unsigned char block[64]);
-void						md5_final(unsigned char [16], MD5_CTX *);
+void						md5_final(unsigned char res[16], t_md5 *ctx);
 
 void						md5_encode(unsigned char *output,
-							UINT4 *input, unsigned int len);
-void						md5_decode(UINT4 *output,
+							t_uint4 *input, unsigned int len);
+void						md5_decode(t_uint4 *output,
 							unsigned char *input, unsigned int len);
-void						md5_memcpy(POINTER output, POINTER input,
+void						md5_memcpy(t_pointer output, t_pointer input,
 							unsigned int len);
-void						md5_memset(POINTER output, int value,
+void						md5_memset(t_pointer output, int value,
 							unsigned int len);
 void						md5_print(unsigned char digest[16]);
 
-UINT4						f(UINT4 x, UINT4 y, UINT4 z);
-UINT4						g(UINT4 x, UINT4 y, UINT4 z);
-UINT4						h(UINT4 x, UINT4 y, UINT4 z);
-UINT4						i(UINT4 x, UINT4 y, UINT4 z);
-UINT4						rotate_left(UINT4 x, int n);
-void						ff(UINT4 *abcd, UINT4 x, int s, UINT4 ac);
-void						gg(UINT4 *abcd, UINT4 x, int s, UINT4 ac);
-void						hh(UINT4 *abcd, UINT4 x, int s, UINT4 ac);
-void						ii(UINT4 *abcd, UINT4 x, int s, UINT4 ac);
+t_uint4						f(t_uint4 x, t_uint4 y, t_uint4 z);
+t_uint4						g(t_uint4 x, t_uint4 y, t_uint4 z);
+t_uint4						h(t_uint4 x, t_uint4 y, t_uint4 z);
+t_uint4						i(t_uint4 x, t_uint4 y, t_uint4 z);
+t_uint4						rotate_left(t_uint4 x, int n);
+void						ff(t_uint4 *abcd, t_uint4 x, int s, t_uint4 ac);
+void						gg(t_uint4 *abcd, t_uint4 x, int s, t_uint4 ac);
+void						hh(t_uint4 *abcd, t_uint4 x, int s, t_uint4 ac);
+void						ii(t_uint4 *abcd, t_uint4 x, int s, t_uint4 ac);
 #endif

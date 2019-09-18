@@ -6,12 +6,12 @@
 /*   By: zweng <zweng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/25 17:29:17 by zweng             #+#    #+#             */
-/*   Updated: 2019/09/16 18:05:13 by zweng            ###   ########.fr       */
+/*   Updated: 2019/09/18 20:51:07 by zweng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_SSH_H
-# define FT_SSH_H
+#ifndef FT_SSL_H
+# define FT_SSL_H
 
 # include "libft.h"
 # include "ft_printf.h"
@@ -26,11 +26,10 @@
 # define F_DEFAULT	0
 
 void	hash(int ac, char **av, int index);
-void	md5_string (char *string, int flag);
-void 	md5_file (char *filename, int flag);
+void	md5_string(char *string, int flag);
+void	md5_file(char *filename, int flag);
 void	md5_filter(int repeat);
-void	sha256_string (char *string, int flag);
-void	sha256_file (char *filename, int flag);
+void	sha256_string(char *string, int flag);
+void	sha256_file(char *filename, int flag);
 void	sha256_filter(int repeat);
-	
 #endif

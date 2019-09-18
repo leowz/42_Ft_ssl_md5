@@ -6,15 +6,15 @@
 /*   By: zweng <zweng@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/05 12:23:28 by zweng             #+#    #+#             */
-/*   Updated: 2019/05/22 12:37:14 by zweng            ###   ########.fr       */
+/*   Updated: 2019/09/18 21:09:35 by zweng            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "md5.h"
 
-static void	rotate_register(UINT4 regis[4])
+static void	rotate_register(t_uint4 regis[4])
 {
-	UINT4	tmp;
+	t_uint4	tmp;
 
 	tmp = regis[3];
 	regis[3] = regis[2];
@@ -23,7 +23,7 @@ static void	rotate_register(UINT4 regis[4])
 	regis[0] = tmp;
 }
 
-void		ff(UINT4 *abcd, UINT4 x, int s, UINT4 ac)
+void		ff(t_uint4 *abcd, t_uint4 x, int s, t_uint4 ac)
 {
 	abcd[0] += f(abcd[1], abcd[2], abcd[3]) + x + ac;
 	abcd[0] = rotate_left(abcd[0], s);
@@ -31,7 +31,7 @@ void		ff(UINT4 *abcd, UINT4 x, int s, UINT4 ac)
 	rotate_register(abcd);
 }
 
-void		gg(UINT4 *abcd, UINT4 x, int s, UINT4 ac)
+void		gg(t_uint4 *abcd, t_uint4 x, int s, t_uint4 ac)
 {
 	abcd[0] += g(abcd[1], abcd[2], abcd[3]) + x + ac;
 	abcd[0] = rotate_left(abcd[0], s);
@@ -39,7 +39,7 @@ void		gg(UINT4 *abcd, UINT4 x, int s, UINT4 ac)
 	rotate_register(abcd);
 }
 
-void		hh(UINT4 *abcd, UINT4 x, int s, UINT4 ac)
+void		hh(t_uint4 *abcd, t_uint4 x, int s, t_uint4 ac)
 {
 	abcd[0] += h(abcd[1], abcd[2], abcd[3]) + x + ac;
 	abcd[0] = rotate_left(abcd[0], s);
@@ -47,7 +47,7 @@ void		hh(UINT4 *abcd, UINT4 x, int s, UINT4 ac)
 	rotate_register(abcd);
 }
 
-void		ii(UINT4 *abcd, UINT4 x, int s, UINT4 ac)
+void		ii(t_uint4 *abcd, t_uint4 x, int s, t_uint4 ac)
 {
 	abcd[0] += i(abcd[1], abcd[2], abcd[3]) + x + ac;
 	abcd[0] = rotate_left(abcd[0], s);
